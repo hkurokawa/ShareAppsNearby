@@ -56,7 +56,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         final AppInfoList list = new AppInfoList();
         final PackageManager pm = getPackageManager();
         for (ApplicationInfo ai : pm.getInstalledApplications(PackageManager.GET_META_DATA)) {
-            list.add(new AppInfo(ai.packageName, pm.getApplicationLabel(ai).toString()));
+            if ((ai.flags & ApplicationInfo.FLAG_SYSTEM) == 0 || (ai.flags & ApplicationInfo.FLAG_UPDATED_SYSTEM_APP) == 1) {
+                list.add(new AppInfo(ai.packageName, pm.getApplicationLabel(ai).toString()));
+            }
         }
         try {
             message = new Message(list.toBytes());
